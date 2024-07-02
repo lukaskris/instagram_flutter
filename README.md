@@ -4,13 +4,12 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is a Instagram clone, using Flutter with BLoC pattern and Dependency Injection.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Capture](./capture/1.png)
+![Capture](./capture/2.png)
+![Capture](./capture/3.png)
+![Capture](./capture/4.png)
+![Capture](./capture/5.png)
+![Capture](./capture/6.png)

@@ -8,9 +8,9 @@ import 'package:intl/intl.dart';
 class PostCard extends StatefulWidget {
   const PostCard({
     Key? key,
-    required this.post,
+    this.post,
   }) : super(key: key);
-  final Post post;
+  final Post? post;
   @override
   State<PostCard> createState() => _PostCardState();
 }
@@ -127,7 +127,7 @@ class _PostCardState extends State<PostCard> {
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
-                    widget.post.postUrl,
+                    'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAWhWkI.img?w=768&h=511&m=6&x=472&y=115&s=94&d=94',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -211,7 +211,7 @@ class _PostCardState extends State<PostCard> {
                         .titleSmall!
                         .copyWith(fontWeight: FontWeight.w800),
                     child: Text(
-                      '${widget.post.likes} likes',
+                      '${widget.post?.likes ?? '0'} likes',
                       style: Theme.of(context).textTheme.bodyMedium,
                     )),
                 Container(
@@ -230,7 +230,7 @@ class _PostCardState extends State<PostCard> {
                           ),
                         ),
                         TextSpan(
-                          text: ' ${widget.post.description}',
+                          text: ' ${widget.post?.description} Shin',
                         ),
                       ],
                     ),

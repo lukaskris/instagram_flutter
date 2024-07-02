@@ -1,10 +1,15 @@
+import 'package:equatable/equatable.dart';
+
 abstract class LoginEvent {}
 
-class SigninEvent extends LoginEvent {
+class SigninEvent extends LoginEvent with EquatableMixin {
   final String email;
   final String password;
 
   SigninEvent(this.email, this.password);
+
+  @override
+  List<Object> get props => [this.email, this.password];
 }
 
 class LogoutEvent extends LoginEvent {}

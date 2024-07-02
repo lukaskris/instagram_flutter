@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:instagram/core/di/injection.dart';
 import 'package:instagram/core/utils/colors.dart';
 import 'package:instagram/core/widgets/post_card.dart';
 import 'package:instagram/features/feed/bloc/feed_bloc.dart';
@@ -17,6 +18,7 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+  FeedBloc get bloc => getIt<FeedBloc>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +48,7 @@ class _FeedScreenState extends State<FeedScreen> {
         ],
       ),
       body: BlocBuilder<FeedBloc, FeedState>(
+        bloc: bloc,
         builder: (context, state) {
           if (state is FeedLoading) {
             return const Center(
@@ -56,14 +59,18 @@ class _FeedScreenState extends State<FeedScreen> {
               child: Text(state.message),
             );
           } else if (state is FeedLoaded) {
-            return ListView.builder(
-              itemCount: state.posts.length + 1,
-              itemBuilder: (ctx, index) => index == 0
-                  ? _story()
-                  : PostCard(post: state.posts[index - 1]),
-            );
-          } else {
+            // return ListView.builder(
+            //   itemCount: 5,
+            //   itemBuilder: (ctx, index) => index == 0
+            //       ? _story()
+            //       : PostCard(post: state.posts[index - 1]),
+            // );
             return Container();
+          } else {
+            return ListView.builder(
+              itemCount: 5,
+              itemBuilder: (ctx, index) => index == 0 ? _story() : PostCard(),
+            );
           }
         },
       ),

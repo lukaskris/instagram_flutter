@@ -8,21 +8,18 @@ import 'package:instagram/features/login/bloc/login_state.dart';
 class AuthBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepository;
 
-  AuthBloc(this.authRepository) : super(LoginInitial());
-
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is SigninEvent) {
-      yield LoginLoading();
+  AuthBloc(this.authRepository) : super(LoginInitial()) {
+    on<SigninEvent>((event, emit) async {
+      emit(LoginLoading());
       try {
         final response =
             await authRepository.login(event.email, event.password);
         if (response != null) {
-          yield LoginAuthenticated();
+          emit(LoginAuthenticated());
         }
       } catch (e) {
-        yield LoginError(e.toString());
+        emit(LoginError(e.toString()));
       }
-    }
+    });
   }
 }
