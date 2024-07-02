@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/core/models/post.dart';
 import 'package:instagram/core/utils/colors.dart';
 import 'package:instagram/core/widgets/like_animation.dart';
 import 'package:instagram/features/comment/comment_screen.dart';
@@ -7,8 +8,9 @@ import 'package:intl/intl.dart';
 class PostCard extends StatefulWidget {
   const PostCard({
     Key? key,
+    required this.post,
   }) : super(key: key);
-
+  final Post post;
   @override
   State<PostCard> createState() => _PostCardState();
 }
@@ -125,7 +127,7 @@ class _PostCardState extends State<PostCard> {
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
-                    'http://localhost:8080/uploads/BB1pbfEj.jpeg',
+                    widget.post.postUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -209,7 +211,7 @@ class _PostCardState extends State<PostCard> {
                         .titleSmall!
                         .copyWith(fontWeight: FontWeight.w800),
                     child: Text(
-                      '24 likes',
+                      '${widget.post.likes} likes',
                       style: Theme.of(context).textTheme.bodyMedium,
                     )),
                 Container(
@@ -218,17 +220,17 @@ class _PostCardState extends State<PostCard> {
                     top: 8,
                   ),
                   child: RichText(
-                    text: const TextSpan(
-                      style: TextStyle(color: Colors.black),
+                    text: TextSpan(
+                      style: const TextStyle(color: Colors.black),
                       children: [
-                        TextSpan(
-                          text: "Sugoro123",
+                        const TextSpan(
+                          text: "Shintaeyong",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         TextSpan(
-                          text: ' hehehe deskripsi test',
+                          text: ' ${widget.post.description}',
                         ),
                       ],
                     ),
@@ -237,8 +239,8 @@ class _PostCardState extends State<PostCard> {
                 InkWell(
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: const Text(
-                      'View all 2 comments',
+                    child: Text(
+                      'View all 0 comments',
                       style: TextStyle(
                         fontSize: 16,
                         color: secondaryColor,

@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:instagram/core/datasource/local_datasource.dart';
-import 'package:instagram/core/datasource/remote_datasource.dart';
-import 'package:instagram/core/network/network_service.dart';
-import 'package:instagram/core/repository/authentication_repository.dart';
-import 'package:instagram/features/login/bloc/login_bloc.dart';
+import 'package:instagram/core/di/injection.dart';
 import 'package:instagram/features/login/login_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
   runApp(const MyApp());
 }
 
-void setupDependencies() {
-  GetIt.I.registerLazySingleton<NetworkService>(() => NetworkService());
-  GetIt.I.registerLazySingleton<RemoteDatasource>(
-      () => RemoteDatasource(networkService: GetIt.I<NetworkService>()));
-  GetIt.I.registerLazySingleton<LocalDatasource>(() => LocalDatasource());
-  GetIt.I.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
-        remoteDataSource: GetIt.I<RemoteDatasource>(),
-        localDataSource: GetIt.I<LocalDatasource>(),
-      ));
+// final locator = GetIt.I;
 
-  GetIt.I.registerLazySingleton<AuthBloc>(
-      () => AuthBloc(GetIt.I<AuthRepository>()));
-}
+// void setupDependencies() {
+//   locator
+//     ..registerLazySingleton<NetworkService>(() => NetworkService())
+//     ..registerLazySingleton<RemoteDatasource>(
+//         () => RemoteDatasource(networkService: GetIt.I<NetworkService>()))
+//     ..registerLazySingleton<LocalDatasource>(() => LocalDatasource())
+//     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
+//           remoteDataSource: GetIt.I<RemoteDatasource>(),
+//           localDataSource: GetIt.I<LocalDatasource>(),
+//         ))
+//     ..registerLazySingleton<AuthBloc>(
+//         () => AuthBloc(GetIt.I<AuthRepository>()));
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

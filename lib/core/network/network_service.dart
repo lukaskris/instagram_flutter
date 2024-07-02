@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:instagram/core/interceptor/token_interceptor.dart';
 import 'package:instagram/core/models/base_response.dart';
+import 'package:instagram/core/models/post_service/post_service.dart';
 import 'package:instagram/core/models/user.dart';
 
 class NetworkService {
@@ -12,6 +14,9 @@ class NetworkService {
         const Duration(milliseconds: 5000); // 5 seconds
     _dio.options.receiveTimeout =
         const Duration(milliseconds: 3000); // 3 seconds
+
+    // Add TokenInterceptor
+    _dio.interceptors.add(TokenInterceptor());
   }
 
   BaseApiResponse<T> _handleResponse<T>(
@@ -32,11 +37,11 @@ class NetworkService {
     }
   }
 
-  Future<BaseApiResponse<List<dynamic>>> getPosts() async {
+  Future<BaseApiResponse<List<PostService>>> getPosts() async {
     try {
       Response response = await _dio.get('/posts');
-      return _handleResponse<List<dynamic>>(
-          response, (data) => data as List<dynamic>);
+      return _handleResponse<List<PostService>>(
+          response, (data) => data as List<PostService>);
     } on DioException catch (e) {
       throw Exception(e.response?.data['detail'] ?? 'Failed to fetch posts');
     }

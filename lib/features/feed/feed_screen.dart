@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:instagram/core/utils/colors.dart';
 import 'package:instagram/core/widgets/post_card.dart';
+import 'package:instagram/features/feed/bloc/feed_bloc.dart';
+import 'package:instagram/features/feed/bloc/feed_state.dart';
 import 'package:instagram/gen/assets.gen.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -42,9 +45,27 @@ class _FeedScreenState extends State<FeedScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: 7,
-        itemBuilder: (ctx, index) => index == 0 ? _story() : const PostCard(),
+      body: BlocBuilder<FeedBloc, FeedState>(
+        builder: (context, state) {
+          if (state is FeedLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is FeedError) {
+            return Center(
+              child: Text(state.message),
+            );
+          } else if (state is FeedLoaded) {
+            return ListView.builder(
+              itemCount: state.posts.length + 1,
+              itemBuilder: (ctx, index) => index == 0
+                  ? _story()
+                  : PostCard(post: state.posts[index - 1]),
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }
