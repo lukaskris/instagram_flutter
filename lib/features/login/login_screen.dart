@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:instagram/core/di/injection.dart';
 import 'package:instagram/core/state/state_status.dart';
 import 'package:instagram/core/state/user_cubit.dart';
@@ -27,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    GetIt.instance.resetLazySingleton<LoginBloc>();
     super.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
@@ -35,11 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void loginUser() async {
     _authBloc
         .add(SigninEvent(_usernameController.text, _passwordController.text));
-    // Navigator.of(context).pushReplacement(
-    //   MaterialPageRoute(
-    //     builder: (context) => const HomeScreen(),
-    //   ),
-    // );
   }
 
   @override

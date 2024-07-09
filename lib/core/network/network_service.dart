@@ -71,7 +71,8 @@ class NetworkService {
     }
   }
 
-  Future<Either<Failure, BaseApiResponse<List<CommentService>>>> getComments(int postId) async {
+  Future<Either<Failure, BaseApiResponse<List<CommentService>>>> getComments(
+      int postId) async {
     try {
       Response response = await _dio.get('/comments/$postId');
       return Right(_handleResponse<List<CommentService>>(
@@ -84,16 +85,17 @@ class NetworkService {
     }
   }
 
-  Future<Either<Failure, BaseApiResponse<CommentService>>> sendComment(int postId, String text) async {
+  Future<Either<Failure, BaseApiResponse<CommentService>>> sendComment(
+      int postId, String text) async {
     try {
       Response response = await _dio.post('/comments', data: {
         'postId': postId,
         'text': text,
       });
-      return Right(
-          _handleResponse<CommentService>(response, (data) => CommentService.fromJson(data)));
+      return Right(_handleResponse<CommentService>(
+          response, (data) => CommentService.fromJson(data)));
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
-    }  
+    }
   }
 }

@@ -31,9 +31,8 @@ abstract class AppModule {
   }
 
   @singleton
-  PostRepository postRepository(
-      RemoteDatasource remoteDatasource, LocalDatasource localDataSource) {
-    return PostRepositoryImpl(remoteDatasource, localDataSource);
+  PostRepository postRepository(RemoteDatasource remoteDatasource) {
+    return PostRepositoryImpl(remoteDatasource);
   }
 
   @singleton

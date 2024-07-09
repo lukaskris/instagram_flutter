@@ -20,7 +20,7 @@ class UserCubit extends Cubit<UserState> {
   bool get isLogin => _isLogin;
 
   void isLoginUser(User? user) {
-    _isLogin = !_isLogin;
+    _isLogin = user != null;
     if (_isLogin && user != null) {
       emit(UserLogin(user: user));
     } else {

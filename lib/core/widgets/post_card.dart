@@ -225,9 +225,9 @@ class _PostCardState extends State<PostCard> {
                     text: TextSpan(
                       style: const TextStyle(color: Colors.black),
                       children: [
-                        const TextSpan(
-                          text: "Shintaeyong",
-                          style: TextStyle(
+                        TextSpan(
+                          text: widget.post?.username ?? '',
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -33,17 +33,27 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<void> logout() async {
     try {
-      await localDataSource.clearToken();
+      await localDataSource.logout();
     } catch (e) {
       throw Exception(e.toString());
     }
   }
-  
+
   @override
-  Future<User?> getUser() async{
+  Future<User?> getUser() async {
     final profilePicture = await localDataSource.getProfilePicture();
     final username = await localDataSource.getUsername();
     final token = await localDataSource.getToken();
-    return User(username: username ?? '', profilePicture: profilePicture ?? '', token: token ?? '', email: '', bio: '', followers: [], following: []);
+    if (username == null || username.isEmpty) {
+      return null;
+    }
+    return User(
+        username: username,
+        profilePicture: profilePicture ?? '',
+        token: token ?? '',
+        email: '',
+        bio: '',
+        followers: const [],
+        following: const []);
   }
 }
