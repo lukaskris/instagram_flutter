@@ -48,12 +48,12 @@ class AuthRepositoryImpl extends AuthRepository {
       return null;
     }
     return User(
-        username: username ?? '',
+        username: username,
         profilePicture: profilePicture ?? '',
         token: token ?? '',
         email: '',
         bio: '',
-        followers: [],
-        following: []);
+        followers: const [],
+        following: const []);
   }
 }
