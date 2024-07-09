@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/core/di/injection.dart';
+import 'package:instagram/core/state/state_status.dart';
+import 'package:instagram/core/state/user_cubit.dart';
 import 'package:instagram/core/utils/colors.dart';
 import 'package:instagram/core/utils/utils.dart';
 import 'package:instagram/core/widgets/text_field_input.dart';
-import 'package:instagram/features/home/home_screen.dart';
 import 'package:instagram/features/login/bloc/login_bloc.dart';
 import 'package:instagram/features/login/bloc/login_event.dart';
 import 'package:instagram/features/login/bloc/login_state.dart';
@@ -21,7 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  AuthBloc get _authBloc => getIt<AuthBloc>();
+  LoginBloc get _authBloc => getIt<LoginBloc>();
+  UserCubit get _userCubit => getIt<UserCubit>();
 
   @override
   void dispose() {
@@ -33,11 +35,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void loginUser() async {
     _authBloc
         .add(SigninEvent(_usernameController.text, _passwordController.text));
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const HomeScreen(),
-      ),
-    );
+    // Navigator.of(context).pushReplacement(
+    //   MaterialPageRoute(
+    //     builder: (context) => const HomeScreen(),
+    //   ),
+    // );
   }
 
   @override
@@ -46,22 +48,18 @@ class _LoginScreenState extends State<LoginScreen> {
       resizeToAvoidBottomInset: false,
       body: BlocProvider(
         create: (context) => _authBloc,
-        lazy: true,
-        child: BlocListener<AuthBloc, LoginState>(
-          bloc: _authBloc,
+        child: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
-            if (state is LoginError) {
-              showSnackBar(context, state.message);
-            } else if (state is LoginAuthenticated) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
-                ),
-              );
+            if (state.status.isFailure) {
+              showSnackBar(context, state.error?.message ?? '');
+            } else if (state.status.isSuccess) {
+              final user = state.user;
+              if (user != null) {
+                _userCubit.isLoginUser(user);
+              }
             }
           },
-          child: BlocBuilder<AuthBloc, LoginState>(
-            bloc: _authBloc,
+          child: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
               return SafeArea(
                 child: Container(
@@ -96,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 24,
                       ),
                       InkWell(
-                        onTap: state is LoginLoading ? null : loginUser,
+                        onTap: state.status.isLoading ? null : loginUser,
                         child: Container(
                           width: double.infinity,
                           alignment: Alignment.center,
@@ -109,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: blueColor,
                           ),
                           child: Text(
-                            state is LoginLoading ? 'Loading' : 'Log in',
+                            state.status.isLoading ? 'Loading' : 'Log in',
                           ),
                         ),
                       ),

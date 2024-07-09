@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/core/models/comment_service/comment_service.dart';
 import 'package:intl/intl.dart';
 
 class CommentCard extends StatelessWidget {
-  const CommentCard({Key? key}) : super(key: key);
+  const CommentCard({Key? key, required this.comment}) : super(key: key);
+  final CommentService comment;
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +12,9 @@ class CommentCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Row(
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             backgroundImage: NetworkImage(
-              "",
+              comment.profilePicture ?? '',
             ),
             radius: 18,
           ),
@@ -24,17 +26,17 @@ class CommentCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text:  TextSpan(
                       children: [
                         TextSpan(
-                            text: "Temp",
-                            style: TextStyle(
+                            text: "${comment.username}",
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             )),
                         TextSpan(
-                            text: ' Test',
-                            style: TextStyle(
+                            text: ' ${comment.text}',
+                            style: const TextStyle(
                               color: Colors.black,
                             )),
                       ],
@@ -44,7 +46,7 @@ class CommentCard extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
                       DateFormat.yMMMd().format(
-                        DateTime.now(),
+                        comment.createdAt ?? DateTime.now(),
                       ),
                       style: const TextStyle(
                         fontSize: 12,

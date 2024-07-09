@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:instagram/core/utils/colors.dart';
+import 'package:instagram/features/setting/setting_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -151,7 +152,15 @@ class ProfileScreen extends StatelessWidget {
         ),
         Flexible(child: Container()),
         IconButton(onPressed: () {}, icon: const Icon(Iconsax.add_square)),
-        IconButton(onPressed: () {}, icon: const Icon(Iconsax.setting)),
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SettingScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Iconsax.setting)),
       ]),
     );
   }

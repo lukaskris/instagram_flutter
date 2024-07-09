@@ -1,8 +1,9 @@
 abstract class FeedEvent {}
 
-class LikeEvent extends FeedEvent {
-  final String postId;
-  final bool isLiked;
+class FeedLoadStarted extends FeedEvent {}
 
-  LikeEvent(this.postId, this.isLiked);
+class LikeEvent extends FeedEvent {
+  final int postId;
+
+  LikeEvent(this.postId);
 }

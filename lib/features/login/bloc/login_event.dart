@@ -9,7 +9,7 @@ class SigninEvent extends LoginEvent with EquatableMixin {
   SigninEvent(this.email, this.password);
 
   @override
-  List<Object> get props => [this.email, this.password];
+  List<Object> get props => [email, password];
 }
 
 class LogoutEvent extends LoginEvent {}

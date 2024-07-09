@@ -1,10 +1,13 @@
+import 'package:either_dart/either.dart';
 import 'package:instagram/core/datasource/local_datasource.dart';
 import 'package:instagram/core/datasource/remote_datasource.dart';
+import 'package:instagram/core/models/failure.dart';
 import 'package:instagram/core/models/user.dart';
 
 abstract class AuthRepository {
-  Future<User?> login(String email, String password);
+  Future<Either<Failure, User?>> login(String email, String password);
   Future<void> logout();
+  Future<User?> getUser();
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -17,17 +20,14 @@ class AuthRepositoryImpl extends AuthRepository {
   });
 
   @override
-  Future<User?> login(String email, String password) async {
-    try {
-      final user = await remoteDataSource.login(email, password);
-      if (user != null) {
-        await localDataSource.saveToken(user.token);
-        return user; // Example user creation
-      }
-      return null;
-    } catch (e) {
-      throw Exception(e.toString());
+  Future<Either<Failure, User?>> login(String email, String password) async {
+    final result = await remoteDataSource.login(email, password);
+    if (result.isRight) {
+      final user = result.right;
+      await localDataSource.saveToken(user!.token);
+      await localDataSource.saveUser(user.profilePicture, user.username);
     }
+    return result;
   }
 
   @override
@@ -37,5 +37,13 @@ class AuthRepositoryImpl extends AuthRepository {
     } catch (e) {
       throw Exception(e.toString());
     }
+  }
+  
+  @override
+  Future<User?> getUser() async{
+    final profilePicture = await localDataSource.getProfilePicture();
+    final username = await localDataSource.getUsername();
+    final token = await localDataSource.getToken();
+    return User(username: username ?? '', profilePicture: profilePicture ?? '', token: token ?? '', email: '', bio: '', followers: [], following: []);
   }
 }

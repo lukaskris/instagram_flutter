@@ -9,7 +9,7 @@ class PostService extends Equatable {
   final DateTime? createdAt;
   final List<String>? images;
   final int? totalLikes;
-  final dynamic likedByUser;
+  final int? likedByUser;
   final int? totalComments;
   final int? postId;
 
@@ -34,7 +34,7 @@ class PostService extends Equatable {
     DateTime? createdAt,
     List<String>? images,
     int? totalLikes,
-    dynamic likedByUser,
+    int? likedByUser,
     int? totalComments,
     int? postId,
   }) {

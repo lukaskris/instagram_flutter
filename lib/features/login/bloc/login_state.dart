@@ -1,15 +1,28 @@
-abstract class LoginState {}
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:instagram/core/models/failure.dart';
+import 'package:instagram/core/models/user.dart';
+import 'package:instagram/core/state/state_status.dart';
+part 'login_state.freezed.dart';
 
-class LoginInitial extends LoginState {}
+@freezed
+sealed class LoginState with _$LoginState {
+  // Added constructor. Must not have any parameter
+  const LoginState._();
 
-class LoginLoading extends LoginState {}
+  factory LoginState(
+      {@Default(StateStatus.initial) StateStatus status,
+      Failure? error,
+      User? user}) = _LoginState;
 
-class LoginAuthenticated extends LoginState {}
+  LoginState asLoading() {
+    return copyWith(status: StateStatus.loading, error: null);
+  }
 
-class LoginUnAuthenticated extends LoginState {}
+  LoginState asLoadSuccess(User user) {
+    return copyWith(status: StateStatus.success, error: null, user: user);
+  }
 
-class LoginError extends LoginState {
-  final String message;
-
-  LoginError(this.message);
+  LoginState asLoadFailure(Failure exception) {
+    return copyWith(status: StateStatus.failure, error: exception);
+  }
 }

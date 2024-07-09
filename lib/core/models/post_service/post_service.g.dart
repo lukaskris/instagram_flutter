@@ -14,7 +14,7 @@ PostService _$PostServiceFromJson(Map<String, dynamic> json) => PostService(
       images:
           (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
       totalLikes: (json['totalLikes'] as num?)?.toInt(),
-      likedByUser: json['likedByUser'],
+      likedByUser: (json['likedByUser'] as num?)?.toInt(),
       totalComments: (json['totalComments'] as num?)?.toInt(),
       postId: (json['postId'] as num?)?.toInt(),
     );

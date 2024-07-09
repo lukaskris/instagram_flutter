@@ -8,10 +8,10 @@ class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
 
   @override
-  _AddPostScreenState createState() => _AddPostScreenState();
+  AddPostScreenState createState() => AddPostScreenState();
 }
 
-class _AddPostScreenState extends State<AddPostScreen> {
+class AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
@@ -154,7 +154,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CircleAvatar(
+                    const CircleAvatar(
                       backgroundImage: NetworkImage(
                           "https://football-tribe.com/asia/wp-content/uploads/sites/8/2017/04/Shin-Tae-Yong-800x533.jpg"),
                     ),

@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (index == 2) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AddPostScreen(),
+                builder: (context) => const AddPostScreen(),
               ),
             );
           }

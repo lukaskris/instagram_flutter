@@ -9,11 +9,22 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsTranslationsGen {
+  const $AssetsTranslationsGen();
+
+  /// File path: assets/translations/en-US.json
+  String get enUS => 'assets/translations/en-US.json';
+
+  /// List of all assets
+  List<String> get values => [enUS];
+}
+
 class Assets {
   Assets._();
 
   static const String icInstagram = 'assets/ic_instagram.svg';
   static const AssetGenImage instagram = AssetGenImage('assets/instagram.png');
+  static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 
   /// List of all assets
   static List<dynamic> get values => [icInstagram, instagram];

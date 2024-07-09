@@ -6,11 +6,9 @@ import 'package:instagram/features/comment/comment_screen.dart';
 import 'package:intl/intl.dart';
 
 class PostCard extends StatefulWidget {
-  const PostCard({
-    Key? key,
-    this.post,
-  }) : super(key: key);
+  const PostCard({Key? key, this.post, required this.like}) : super(key: key);
   final Post? post;
+  final VoidCallback like;
   @override
   State<PostCard> createState() => _PostCardState();
 }
@@ -45,15 +43,16 @@ class _PostCardState extends State<PostCard> {
             ).copyWith(right: 0),
             child: Row(
               children: <Widget>[
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                    'https://th.bing.com/th/id/R.dae0da024b0003e541913fa3c2c2f942?rik=SDmGFeo1MgNYlw&riu=http%3a%2f%2fcdn01.cdn.justjared.com%2fwp-content%2fuploads%2fheadlines%2f2019%2f04%2finstagram-testing-new-feature1.jpg&ehk=B9oeH33F%2fMRM57hax2UcpnFw%2fl%2fNTkyK%2fAaqlrDGzxA%3d&risl=&pid=ImgRaw&r=0',
+                    widget.post?.profImage ?? '',
+                    // 'https://th.bing.com/th/id/R.dae0da024b0003e541913fa3c2c2f942?rik=SDmGFeo1MgNYlw&riu=http%3a%2f%2fcdn01.cdn.justjared.com%2fwp-content%2fuploads%2fheadlines%2f2019%2f04%2finstagram-testing-new-feature1.jpg&ehk=B9oeH33F%2fMRM57hax2UcpnFw%2fl%2fNTkyK%2fAaqlrDGzxA%3d&risl=&pid=ImgRaw&r=0',
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       left: 8,
                     ),
                     child: Column(
@@ -61,8 +60,8 @@ class _PostCardState extends State<PostCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Suguru',
-                          style: TextStyle(
+                          widget.post?.username ?? '',
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -118,6 +117,7 @@ class _PostCardState extends State<PostCard> {
             onDoubleTap: () {
               setState(() {
                 isLikeAnimating = true;
+                widget.like();
               });
             },
             child: Stack(
@@ -127,7 +127,7 @@ class _PostCardState extends State<PostCard> {
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
-                    'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAWhWkI.img?w=768&h=511&m=6&x=472&y=115&s=94&d=94',
+                    widget.post?.postUrl ?? '',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -161,7 +161,7 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: true,
                 smallLike: true,
                 child: IconButton(
-                  icon: 1 == 0
+                  icon: widget.post?.isLike == true
                       ? const Icon(
                           Icons.favorite,
                           color: Colors.red,
@@ -169,7 +169,9 @@ class _PostCardState extends State<PostCard> {
                       : const Icon(
                           Icons.favorite_border,
                         ),
-                  onPressed: () {},
+                  onPressed: () {
+                    widget.like();
+                  },
                 ),
               ),
               IconButton(
@@ -180,7 +182,7 @@ class _PostCardState extends State<PostCard> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => CommentsScreen(
-                          postId: "",
+                          postId: widget.post?.postId ?? 0,
                         ),
                       ),
                     );
@@ -240,21 +242,21 @@ class _PostCardState extends State<PostCard> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      'View all 0 comments',
-                      style: TextStyle(
+                      'View all ${widget.post?.totalComments} comments',
+                      style: const TextStyle(
                         fontSize: 16,
                         color: secondaryColor,
                       ),
                     ),
                   ),
                   onTap: () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => CommentsScreen(
-                    //       postId: "",
-                    //     ),
-                    //   ),
-                    // );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CommentsScreen(
+                          postId: widget.post?.postId ?? 0,
+                        ),
+                      ),
+                    );
                   },
                 ),
                 Container(

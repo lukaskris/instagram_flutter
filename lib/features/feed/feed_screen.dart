@@ -4,9 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:instagram/core/di/injection.dart';
+import 'package:instagram/core/state/state_status.dart';
 import 'package:instagram/core/utils/colors.dart';
 import 'package:instagram/core/widgets/post_card.dart';
 import 'package:instagram/features/feed/bloc/feed_bloc.dart';
+import 'package:instagram/features/feed/bloc/feed_event.dart';
 import 'package:instagram/features/feed/bloc/feed_state.dart';
 import 'package:instagram/gen/assets.gen.dart';
 
@@ -19,6 +21,14 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   FeedBloc get bloc => getIt<FeedBloc>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    bloc.add(FeedLoadStarted());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,27 +60,44 @@ class _FeedScreenState extends State<FeedScreen> {
       body: BlocBuilder<FeedBloc, FeedState>(
         bloc: bloc,
         builder: (context, state) {
-          if (state is FeedLoading) {
+          if (state.status.isLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is FeedError) {
+          } else if (state.status.isFailure) {
             return Center(
-              child: Text(state.message),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(state.error?.message ?? ''),
+                  TextButton(
+                      onPressed: () {
+                        bloc.add(FeedLoadStarted());
+                      },
+                      child: const Text('Try Again'))
+                ],
+              ),
             );
-          } else if (state is FeedLoaded) {
-            // return ListView.builder(
-            //   itemCount: 5,
-            //   itemBuilder: (ctx, index) => index == 0
-            //       ? _story()
-            //       : PostCard(post: state.posts[index - 1]),
-            // );
-            return Container();
+          } else if (state.status.isSuccess) {
+            return RefreshIndicator.adaptive(
+              onRefresh: () async {
+                bloc.add(FeedLoadStarted());
+              },
+              child: ListView.builder(
+                itemCount: state.post.length + 1,
+                itemBuilder: (ctx, index) => index == 0
+                    ? _story()
+                    : PostCard(
+                        post: state.post[index - 1],
+                        like: () {
+                          bloc.add(LikeEvent(state.post[index - 1].postId));
+                        },
+                      ),
+              ),
+            );
           } else {
-            return ListView.builder(
-              itemCount: 5,
-              itemBuilder: (ctx, index) => index == 0 ? _story() : PostCard(),
-            );
+            return Container();
           }
         },
       ),

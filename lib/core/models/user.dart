@@ -5,19 +5,17 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User extends Equatable {
-  final String email;
-  final String uid;
-  final String photoUrl;
+  final String? email;
+  final String profilePicture;
   final String username;
-  final String bio;
+  final String? bio;
   final String token;
-  final List followers;
-  final List following;
+  final List? followers;
+  final List? following;
 
   const User({
     required this.username,
-    required this.uid,
-    required this.photoUrl,
+    required this.profilePicture,
     required this.email,
     required this.bio,
     required this.followers,
@@ -27,7 +25,7 @@ class User extends Equatable {
 
   @override
   List<Object?> get props =>
-      [username, email, uid, photoUrl, followers, following, token];
+      [username, email, profilePicture, followers, following, token];
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
