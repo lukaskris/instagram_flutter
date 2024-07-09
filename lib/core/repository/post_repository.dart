@@ -1,5 +1,4 @@
 import 'package:either_dart/either.dart';
-import 'package:instagram/core/datasource/local_datasource.dart';
 import 'package:instagram/core/datasource/remote_datasource.dart';
 import 'package:instagram/core/models/failure.dart';
 import 'package:instagram/core/models/post.dart';
@@ -12,14 +11,11 @@ abstract class PostRepository {
 
 class PostRepositoryImpl extends PostRepository {
   RemoteDatasource remoteDatasource;
-  LocalDatasource localDatasource;
-  PostRepositoryImpl(this.remoteDatasource, this.localDatasource);
+  PostRepositoryImpl(this.remoteDatasource);
 
   @override
   Future<Either<Failure, List<Post>>> getPosts() async {
     final result = await remoteDatasource.getPost();
-    final profilePicture = await localDatasource.getProfilePicture() ?? '';
-    final username = await localDatasource.getUsername() ?? '';
     if (result.isRight) {
       return Right(result.right
           .map((e) => Post(
@@ -27,11 +23,11 @@ class PostRepositoryImpl extends PostRepository {
               description: e.content ?? '',
               likes: e.totalLikes ?? 0,
               postId: (e.postId ?? 0),
-              profImage: profilePicture,
+              profImage: e.profilePicture ?? '',
               postUrl: NetworkService.baseUrl + (e.images?.firstOrNull ?? ''),
               uid: '',
               totalComments: e.totalComments ?? 0,
-              username: username,
+              username: e.username ?? '',
               isLike: e.likedByUser == 1))
           .toList());
     } else {
@@ -41,8 +37,6 @@ class PostRepositoryImpl extends PostRepository {
 
   @override
   Future<Either<Failure, Post>> likePost(String postId) async {
-    final username = await localDatasource.getUsername() ?? '';
-    final profilePicture = await localDatasource.getProfilePicture() ?? '';
     final result = await remoteDatasource.likePost(postId);
     if (result.isRight) {
       final e = result.right;
@@ -51,11 +45,11 @@ class PostRepositoryImpl extends PostRepository {
           description: e.content ?? '',
           likes: e.totalLikes ?? 0,
           postId: (e.postId ?? 0),
-          profImage: profilePicture,
+          profImage: e.profilePicture ?? '',
           totalComments: e.totalComments ?? 0,
           postUrl: NetworkService.baseUrl + (e.images?.firstOrNull ?? ''),
           uid: '',
-          username: username,
+          username: e.username ?? '',
           isLike: e.likedByUser == 1));
     } else {
       return Left(result.left);

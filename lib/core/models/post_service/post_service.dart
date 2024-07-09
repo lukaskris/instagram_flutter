@@ -6,6 +6,8 @@ part 'post_service.g.dart';
 @JsonSerializable()
 class PostService extends Equatable {
   final String? content;
+  final String? username;
+  final String? profilePicture;
   final DateTime? createdAt;
   final List<String>? images;
   final int? totalLikes;
@@ -21,6 +23,8 @@ class PostService extends Equatable {
     this.likedByUser,
     this.totalComments,
     this.postId,
+    this.username,
+    this.profilePicture,
   });
 
   factory PostService.fromJson(Map<String, dynamic> json) {
@@ -31,6 +35,8 @@ class PostService extends Equatable {
 
   PostService copyWith({
     String? content,
+    String? profilePicture,
+    String? username,
     DateTime? createdAt,
     List<String>? images,
     int? totalLikes,
@@ -46,6 +52,8 @@ class PostService extends Equatable {
       likedByUser: likedByUser ?? this.likedByUser,
       totalComments: totalComments ?? this.totalComments,
       postId: postId ?? this.postId,
+      profilePicture: profilePicture ?? this.profilePicture,
+      username: username ?? this.username,
     );
   }
 
@@ -59,6 +67,8 @@ class PostService extends Equatable {
       likedByUser,
       totalComments,
       postId,
+      profilePicture,
+      username,
     ];
   }
 }

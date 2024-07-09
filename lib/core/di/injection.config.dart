@@ -45,11 +45,10 @@ _i1.GetIt $initGetIt(
     get<_i5.RemoteDatasource>(),
     get<_i3.LocalDatasource>(),
   ));
-  gh.singleton<_i8.LoginBloc>(_i8.LoginBloc(get<_i6.AuthRepository>()));
-  gh.singleton<_i9.PostRepository>(appModule.postRepository(
-    get<_i5.RemoteDatasource>(),
-    get<_i3.LocalDatasource>(),
-  ));
+  gh.lazySingleton<_i8.LoginBloc>(
+      () => _i8.LoginBloc(get<_i6.AuthRepository>()));
+  gh.singleton<_i9.PostRepository>(
+      appModule.postRepository(get<_i5.RemoteDatasource>()));
   gh.singleton<_i10.UserCubit>(_i10.UserCubit(get<_i6.AuthRepository>()));
   gh.lazySingleton<_i11.CommentBloc>(() => _i11.CommentBloc(
         get<_i7.CommentRepository>(),

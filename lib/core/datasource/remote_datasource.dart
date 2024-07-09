@@ -47,13 +47,14 @@ class RemoteDatasource {
     }
   }
 
-  Future<Either<Failure, CommentService>> sendComment(int postId, String text) async {
+  Future<Either<Failure, CommentService>> sendComment(
+      int postId, String text) async {
     final result = await _networkService.sendComment(postId, text);
     if (result.isRight) {
-    final data = result.right.data;
+      final data = result.right.data;
       return Right(data.copyWith(
-        profilePicture: NetworkService.baseUrl + (data.profilePicture ?? '')
-      ));
+          profilePicture:
+              NetworkService.baseUrl + (data.profilePicture ?? '')));
     } else {
       return Left(result.left);
     }

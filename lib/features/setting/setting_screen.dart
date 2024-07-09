@@ -64,6 +64,7 @@ class _SettingScreenState extends State<SettingScreen> {
               contentPadding: const EdgeInsets.symmetric(horizontal: 16),
               onTap: () async {
                 await _userCubit.logout();
+                Navigator.of(context).pop();
               },
             ),
           ],

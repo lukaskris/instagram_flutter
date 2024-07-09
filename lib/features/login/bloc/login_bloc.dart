@@ -5,7 +5,7 @@ import 'package:instagram/core/repository/authentication_repository.dart';
 import 'package:instagram/features/login/bloc/login_event.dart';
 import 'package:instagram/features/login/bloc/login_state.dart';
 
-@singleton
+@lazySingleton
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepository;
 

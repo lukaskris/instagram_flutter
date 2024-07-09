@@ -27,8 +27,10 @@ class LocalDatasource {
     return prefs.getString('username');
   }
 
-  Future<void> clearToken() async {
+  Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    await prefs.remove('username');
+    await prefs.remove('profilePicture');
   }
 }

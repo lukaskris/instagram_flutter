@@ -63,7 +63,6 @@ class CommentsScreenState extends State<CommentsScreen> {
         },
         child: BlocBuilder<CommentBloc, CommentState>(
           builder: (context, state) {
-            
             return Scaffold(
               appBar: AppBar(
                 title: const Text(
@@ -81,9 +80,9 @@ class CommentsScreenState extends State<CommentsScreen> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          state.user?.profilePicture ?? ''),
-                            // "https://football-tribe.com/asia/wp-content/uploads/sites/8/2017/04/Shin-Tae-Yong-800x533.jpg"),
+                        backgroundImage:
+                            NetworkImage(state.user?.profilePicture ?? ''),
+                        // "https://football-tribe.com/asia/wp-content/uploads/sites/8/2017/04/Shin-Tae-Yong-800x533.jpg"),
                         radius: 18,
                       ),
                       Expanded(
@@ -122,7 +121,7 @@ class CommentsScreenState extends State<CommentsScreen> {
     );
   }
 
-  Widget _content(CommentState state){
+  Widget _content(CommentState state) {
     if (state.status.isLoading) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -136,8 +135,7 @@ class CommentsScreenState extends State<CommentsScreen> {
             Text(state.error?.message ?? ''),
             TextButton(
               onPressed: () {
-                _commentBloc
-                    .add(CommentEvent.started(widget.postId));
+                _commentBloc.add(CommentEvent.started(widget.postId));
               },
               child: const Text('Try Again'),
             )

@@ -17,11 +17,15 @@ PostService _$PostServiceFromJson(Map<String, dynamic> json) => PostService(
       likedByUser: (json['likedByUser'] as num?)?.toInt(),
       totalComments: (json['totalComments'] as num?)?.toInt(),
       postId: (json['postId'] as num?)?.toInt(),
+      username: json['username'] as String?,
+      profilePicture: json['profilePicture'] as String?,
     );
 
 Map<String, dynamic> _$PostServiceToJson(PostService instance) =>
     <String, dynamic>{
       'content': instance.content,
+      'username': instance.username,
+      'profilePicture': instance.profilePicture,
       'createdAt': instance.createdAt?.toIso8601String(),
       'images': instance.images,
       'totalLikes': instance.totalLikes,
